@@ -48,6 +48,7 @@ def save_ip(hostname, ip): #Appends the new IP address into the text file
             f.write(hostname)
             f.write(" ")
             f.write(ip)
+            f.write("\n")
             f.close()
     except:
         print("Saving failed")
@@ -101,14 +102,13 @@ def com2(hostname, ip): #Manually add a record from Client
 
 def com3(hostname): #Deletes a record based on Client request
     try:
-        with open('IP_list.txt', 'r') as f:
-            lines = f.readline()
-            f.close()
+        with open("IP_list.txt", "r") as f:
+            lines = f.readlines()
         with open("IP_list.txt", "w") as f:
             for line in lines:
-                if line.strip("\n") != hostname:
+                name = line[:len(hostname)]
+                if name != hostname:
                     f.write(line)
-            f.close()
         print("{} is deleted from record".format(hostname))
         client_s.sendall(str.encode("{} is deleted from record".format(hostname)))
     except:
